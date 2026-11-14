@@ -1,0 +1,18 @@
+# Secrets : la clé API ne doit JAMAIS être commitée
+.env
+config/config.yaml
+
+# Données volumineuses / régénérables
+data/
+!data/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/
+
+# macOS
+.DS_Store

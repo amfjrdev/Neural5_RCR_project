@@ -1,0 +1,13 @@
+id,niveau,langue,question,date_reference,texte_attendu,article_attendu,reponse_attendue,hors_perimetre,verifie_par
+Q01,1-directe,fr,Quel est le jour de repos hebdomadaire légal ?,,,,,non,
+Q02,1-directe,fr,Un contrat de travail peut-il être conclu à l'oral ?,,,,,non,
+Q03,2-combinee,fr,Dans quels cas un CDD est-il autorisé ?,,,,,non,
+Q04,2-combinee,fr,Quelles sont les obligations de l'employeur en matière d'hygiène et de sécurité ?,,,,,non,
+Q05,3-cas-pratique,fr,Un salarié est licencié sans motif : quels recours et quelles garanties prévoient les textes ?,,,,,non,
+Q06,3-datee,fr,"Que prévoyait la loi sur les cas de recours au CDD en 1993, et qu'est-ce qui a changé depuis ?",1993-01-01,,,,non,
+Q07,hors-perimetre,fr,Quelle est la durée du préavis en France ?,,,,Je ne trouve pas de règle dans le corpus (droit français hors périmètre),oui,
+QA01,1-directe,ar,ما هو يوم الراحة الأسبوعية القانوني؟,,,,,non,
+QA02,1-directe,ar,هل يمكن إبرام عقد العمل شفهيا؟,,,,,non,
+QA03,1-directe,ar,ما هي المدة القصوى لفترة التجربة؟,,,,,non,
+QA04,2-combinee,ar,ما هي الحالات التي يجوز فيها إبرام عقد عمل محدد المدة؟,,,,,non,
+QA05,1-directe,ar,هل يحق للمستخدم تسريح عامل دون إشعار مسبق؟,,,,,non,

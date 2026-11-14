@@ -1,0 +1,25 @@
+# Numéros du Journal officiel à collecter en priorité (semaine 1).
+# Références relevées sur des sources secondaires : À VÉRIFIER sur le PDF
+# officiel (titre du texte présent dans le numéro) et cocher "verifie: true".
+# Les numéros d'avant 2002 sont des scans -> OCR.
+targets:
+  - {year: 1990, number: 6,  editions: [fr, ar], verifie: false,
+     contenu: "Lois 90-02 (conflits collectifs, grève), 90-03 (inspection du travail), 90-04 (conflits individuels)"}
+  - {year: 1990, number: 17, editions: [fr, ar], verifie: false,
+     contenu: "Loi 90-11 du 21 avril 1990 relative aux relations de travail (texte de référence)"}
+  - {year: 1991, number: 68, editions: [fr, ar], verifie: false,
+     contenu: "Loi 91-29 modifiant la loi 90-11 ; lois 91-27 et 91-28"}
+  - {year: 1994, number: 20, editions: [fr, ar], verifie: false,
+     contenu: "Décret législatif 94-03 complétant la loi 90-11"}
+  - {year: 1996, number: 43, editions: [fr, ar], verifie: false,
+     contenu: "Ordonnance 96-21 modifiant et complétant la loi 90-11"}
+  - {year: 1997, number: 3,  editions: [fr, ar], verifie: false,
+     contenu: "Ordonnances 97-02 (complète 90-11) et 97-03 (durée légale du travail)"}
+  # Loi 22-16 du 20 juillet 2022 complétant la loi 90-11 : numéro du JO à trouver
+  # (index Upgrowth / sommaires 2022) puis à ajouter ici.
+
+# Échantillon "texte natif" pour évaluer le filtre (numéros récents, PDF non scannés).
+# Prenez quelques numéros variés ; ils contiennent surtout des textes NON pertinents,
+# ce qui est utile pour mesurer les faux positifs.
+sample_recent:
+  - {year: 2025, numbers: [1, 2, 3, 4, 5], editions: [fr]}

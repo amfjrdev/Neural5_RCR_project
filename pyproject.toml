@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jurideazor"
+version = "0.1.0"
+description = "Base de connaissances et assistant sur le droit du travail algérien (projet RCR, M1 IA, UC2)"
+requires-python = ">=3.10"
+dependencies = ["requests>=2.31", "PyYAML>=6.0", "pymupdf>=1.24", "pytesseract>=0.3.10", "Pillow>=10.0"]
+
+[project.scripts]
+jurideazor = "jurideazor.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

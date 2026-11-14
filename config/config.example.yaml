@@ -1,0 +1,31 @@
+# Copier en config/config.yaml (ignoré par Git) puis adapter.
+project:
+  # Identifiez-vous honnêtement auprès des serveurs (mettez l'email de l'équipe).
+  user_agent: "Jurideazor-RCR-UC2/0.1 (projet etudiant M1 IA, Universite Constantine 2; contact: EMAIL_EQUIPE)"
+
+paths:
+  data_dir: data            # PDF, base SQLite, cache LLM (ignoré par Git)
+
+collect:
+  index_csv_url: "https://www.upgrowth.dz/data/journal-officiel-archive.csv"
+  # Motif officiel des PDF (cf. index Upgrowth) ; {num3} = numéro sur 3 chiffres
+  url_fr: "https://www.joradp.dz/FTP/jo-francais/{year}/F{year}{num3}.pdf"
+  url_ar: "https://www.joradp.dz/FTP/jo-arabe/{year}/A{year}{num3}.pdf"
+  delay_seconds: 5          # pause minimale entre deux requêtes (politesse)
+  timeout: 90
+  max_retries: 3
+  respect_robots: true      # ne pas désactiver
+
+extract:
+  ocr_min_chars_per_page: 80   # en dessous : la page est considérée scannée -> OCR
+  ocr_dpi: 300
+
+filter:
+  keep_threshold: 4.0       # score >= seuil -> keep
+  review_threshold: 2.0     # entre les deux -> review (à vérifier à la main)
+
+llm:
+  # Le modèle est IMPOSÉ par l'enseignant : ne mettez que celui annoncé.
+  provider: "A_CONFIRMER"   # "gemini" ou "groq" selon l'annonce officielle
+  model: "A_CONFIRMER"
+  temperature: 0
