@@ -34,13 +34,27 @@ Les données dérivées sont versionnées (`data/jurideazor.sqlite`, `data/artic
 ```bash
 git pull
 python3 -m venv .venv && source .venv/bin/activate     # macOS : python3 ; Windows : .venv\Scripts\activate
-pip install -e . && pip install -r requirements.txt
+pip install -e . && pip install -r requirements-lock.txt   # versions exactes de l'équipe
 cp .env.example .env                                   # mettre VOTRE clé Groq (une par personne)
 cp config/config.example.yaml config/config.yaml
 python scripts/search.py "Quel est le jour de repos hebdomadaire ?"   # 1er lancement : télécharge E5 (~470 Mo)
 python scripts/eval_retrieval.py                                       # rejoue la comparaison BM25 / E5
 python scripts/llm_seul.py                                             # rejoue le test LLM depuis le cache (0 appel)
 ```
+
+### Sous Windows
+```powershell
+git clone https://github.com/amfjrdev/Neural5_RCR_project.git
+cd Neural5_RCR_project
+py -3.14 -m venv .venv              # même version de Python que l'équipe (3.14)
+.venv\Scripts\activate              # si PowerShell refuse : Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+pip install -e . ; pip install -r requirements-lock.txt
+copy .env.example .env               # mettre VOTRE clé Groq
+copy config\config.example.yaml config\config.yaml
+$env:PYTHONUTF8 = "1"                # affichage et fichiers en UTF-8 (texte arabe)
+python scripts\search.py "Quel est le jour de repos hebdomadaire ?"
+```
+Tesseract (seulement pour tout reconstruire) : installeur UB-Mannheim, cocher French et Arabic, ajouter au PATH.
 
 ## Tout reconstruire depuis zéro (~1 h, surtout l'OCR)
 Prérequis : Tesseract avec `fra` et `ara` (macOS : `brew install tesseract tesseract-lang`).

@@ -1,7 +1,7 @@
 # Copier en config/config.yaml (ignoré par Git) puis adapter.
 project:
   # Identifiez-vous honnêtement auprès des serveurs (mettez l'email de l'équipe).
-  user_agent: "Jurideazor-RCR-UC2/0.1 (projet etudiant M1 IA, Universite Constantine 2; contact: EMAIL_EQUIPE)"
+  user_agent: "Jurideazor-RCR-UC2/0.1 (projet etudiant M1 IA, Universite Constantine 2; contact: neural5rcr@gmail.com)"
 
 paths:
   data_dir: data            # PDF, base SQLite, cache LLM (ignoré par Git)

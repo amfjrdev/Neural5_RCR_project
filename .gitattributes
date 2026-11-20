@@ -1,0 +1,5 @@
+# Données : ne jamais convertir les fins de ligne (Windows/macOS identiques)
+data/** -text
+*.sqlite binary
+*.index binary
+*.npy binary
