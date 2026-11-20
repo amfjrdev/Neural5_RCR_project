@@ -1,0 +1,25 @@
+Numéros : {'ar': 7, 'fr': 11}
+Téléchargés : 18 | échecs : 0
+Pages OCR / total : (379, 620)
+Textes par décision : {'keep': 37, 'reject': 360, 'review': 13}
+Textes gardés par type : {'arrete': 3, 'arrete_interministeriel': 2, 'decret_executif': 10, 'decret_legislatif': 2, 'decret_presidentiel': 2, 'loi': 15, 'ordonnance': 3}
+  [ar] loi 90-04 (None) قانون رقم 90 - 04 مؤرخ في 10 رجب عام 1410 الموافق 6 نوفمبر سنة. 1990 يتعلق بتسوية النزاعات
+  [ar] loi 91-30 (None) قانون رقم 91 - 30 مؤرخ في 14 جمادى الثانية عام 2 الموافق 21 ديسمير سينة 1991, يعدل ويتمم ا
+  [ar] loi 90-02 (1990-02-06) قانون رقم 90 - 02 مؤرخ في 10 رجب عام 1410 الموافق 6 فبراير سنة 1990 يتعلق بالوقاية من النز
+  [ar] loi 90-03 (1990-02-06) قانون رقم 90 - 03 مؤرخ في 10 رجب عام 1410 الموافق 6 فبراير سنة 1990 يتعلق بمفتشية العمل
+  [fr] loi 90-02 (1990-02-06) Loi n° 90-02 du 6 février 1990 relative à la prévention et au règlement des confits collec
+  [fr] loi 90-03 (1990-02-06) Loi n° 90-03 du 6 février 1990 relative à l'inspection du travail.
+  [fr] loi 90-04 (1990-02-06) Loi n° 90-04 du 6 février 1990 relative au règlement des conflits individuels de travail.
+  [ar] loi 91-27 (1990-02-06) قانون رقم 91 - 27 مؤرخ فى 14 جمادى الثانية عام 2 الموافق 21 ديسمير سينة 1991, يعدل ويتمم ا
+  [ar] loi 90-11 (1990-04-21) قانون رقم 90 - 11 مؤرخ في 26 رمضان عام 1410 الموافق 21 ابريل سنة 1990 يتعلق بعلاقات العمل
+  [fr] loi 90-11 (1990-04-21) Loi n° 90-11 du 21 avril 1990 relative aux relations de travail. |
+  [ar] ordonnance 21-96 (1990-04-21) أمر رقم 21-96 مؤرخ في 23 صفر عام 7 الموافق 9 يوليو سئة 1996, 11-90 يعدل ويتمّم القانون رقم
+  [ar] loi 91-28 (1991-12-21) قانون رقم 91 - 28 مؤرخ في 14 جمادى الثانية عام 2 الموافق 21 ديسمبر سنة 1991. يعدل ويتمم ال
+  [fr] loi 91-27 (1991-12-21) Loi n° 91-27 du 21 décembre 1991 modifiant et complétant La loi n° 90-02 du 6 février 1990
+  [fr] loi 91-28 (1991-12-21) Loi n° 91-28 du 21 décembre 1991 modifiant et complétant la loi n° 90-04 du 6 février 1990
+  [fr] loi 91-29 (1991-12-21) Loi n° 91-29 du 21 décembre 1991 modifiant et complétant la loi n° 90-11 du 21 avril 1990 
+  [fr] loi 91-30 (1991-12-21) Loi n° 91-30 du 21 décembre 1991 modifiant et complétant la loi n° 90-14 du 2 juin 1990 re
+  [fr] decret_legislatif 94-04 (1994-04-11) Décret législatif n° 94-04 du 30 Chaoual 1414 correspondant au 11 avril 1994 modifiant la 
+  [fr] decret_legislatif 94-05 (1994-04-11) Décret législatif n° 94-05 du 30 Chaoual 1414 correspondant au 11 avril 1994 modifiant la 
+  [fr] ordonnance 96-21 (1996-07-09) Ordonnance n° 96-21 du 23 Safar 1417 correspondant au 9 juillet 1996 modifiant et compléta
+  [fr] ordonnance 97-03 (1997-01-11) Ordonnance n° 97-03 du 2 Ramadhan 1417 correspondant au 11 janvier 1997 fixant la durée lé
