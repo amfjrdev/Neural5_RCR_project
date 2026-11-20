@@ -72,10 +72,16 @@ class LLMClient:
             if not key:
                 raise RuntimeError("GROQ_API_KEY absente (.env)")
             msgs = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": prompt}]
-            r = requests.post("https://api.groq.com/openai/v1/chat/completions",
-                              headers={"Authorization": f"Bearer {key}"},
-                              json={"model": self.model, "messages": msgs, "temperature": self.temperature},
-                              timeout=120)
+            body = {"model": self.model, "messages": msgs, "temperature": self.temperature,
+                    "reasoning_effort": "low"}  # gpt-oss : limite les jetons de raisonnement (quota)
+            for attempt in range(4):  # consigne : sur 429, attendre puis réessayer 2-3 fois au plus
+                r = requests.post("https://api.groq.com/openai/v1/chat/completions",
+                                  headers={"Authorization": f"Bearer {key}"}, json=body, timeout=120)
+                if r.status_code != 429 or attempt == 3:
+                    break
+                wait = float(r.headers.get("retry-after", 10 * (attempt + 1)))
+                print(f"  429 (quota) : pause {wait:.0f} s puis nouvel essai")
+                time.sleep(wait)
             r.raise_for_status()
             return r.json()["choices"][0]["message"]["content"]
         raise ValueError(f"provider inconnu : {self.provider}")
