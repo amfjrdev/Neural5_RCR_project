@@ -1,0 +1,12 @@
+id,langue,question,article_attendu,bm25_top5,e5_top5
+Q01,fr,Quel est le jour de repos hebdomadaire légal ?,33,35|fr ; 37|fr ; 36|fr ; 33|fr ; 38|fr,35|fr ; 33|fr ; 37|fr ; 36|fr ; 38|fr
+Q02,fr,Un contrat de travail peut-il être conclu à l'oral ?,9;10;11,11|fr ; 14|fr ; 13|fr ; 12|fr ; 10|fr,11|fr ; 12|fr ; 14|fr ; 8|fr ; 10|fr
+Q03,fr,Dans quels cas un CDD est-il autorisé ?,12;12 bis,50|fr ; 140|fr ; 47|fr ; 139|fr ; 134|fr,142|fr ; 69|fr ; 47|fr ; 113|fr ; 96|fr
+Q04,fr,Quelles sont les obligations de l'employeur en matière d'hygiène et de sécurité ?,5;7;77,5|fr ; 7|fr ; 77|fr ; 94|fr ; 64|fr,7|fr ; 5|fr ; 77|fr ; 6|fr ; 156|fr
+Q05,fr,Un salarié est licencié sans motif : quels recours et quelles garanties prévoient les textes ?,73;73-2;73-4,31|fr ; 87|fr ; 90|fr ; 71|fr ; 5|fr,53|fr ; 68|fr ; 66|fr ; 72|fr ; 73|fr
+Q06,fr,"Que prévoyait la loi sur les cas de recours au CDD en 1993, et qu'est-ce qui a changé depuis ?","12 (version 1990) ; 12 al. 5, 12 bis, 146 bis (ord. 96-21)",31|fr ; 143|fr ; 53|fr ; 140|fr ; 154|fr,74|fr ; 143|fr ; 108|fr ; 158|fr ; 100|fr
+QA01,ar,ما هو يوم الراحة الأسبوعية القانوني؟,33,33|ar ; 36|ar ; 32|ar ; 41|ar ; 5|ar,36|ar ; 33|ar ; 34|ar ; 22|ar ; 143|ar
+QA02,ar,هل يمكن إبرام عقد العمل شفهيا؟,9;10;11,10|ar ; 63|ar ; 13|ar ; 62|ar ; 9|ar,13|ar ; 11|ar ; 6|ar ; 63|ar ; 10|ar
+QA03,ar,ما هي المدة القصوى لفترة التجربة؟,18,24|ar ; 19|ar ; 117|ar ; 18|ar ; 31|ar,22|ar ; 43|ar ; 18|ar ; 24|ar ; 18|fr
+QA04,ar,ما هي الحالات التي يجوز فيها إبرام عقد عمل محدد المدة؟,12;12 bis,13|ar ; 11|ar ; 21|ar ; 53|ar ; 31|ar,13|ar ; 11|ar ; 120|ar ; 157|ar ; 64|ar
+QA05,ar,هل يحق للمستخدم تسريح عامل دون إشعار مسبق؟,73;20,31|ar ; 99|ar ; 140|ar ; 113|ar ; 21|ar,72|ar ; 68|ar ; 30|ar ; 6|ar ; 49|ar
