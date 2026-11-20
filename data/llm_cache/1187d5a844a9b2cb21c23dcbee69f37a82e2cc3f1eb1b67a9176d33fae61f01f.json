@@ -1,0 +1,8 @@
+{
+ "provider": "groq",
+ "model": "openai/gpt-oss-120b",
+ "system": "Tu es un assistant juridique. Réponds à la question sur le droit du travail algérien en 5 phrases au plus, dans la langue de la question. Cite le texte de loi et le numéro d'article exacts sur lesquels tu t'appuies.",
+ "prompt": "Un salarié est licencié sans motif : quels recours et quelles garanties prévoient les textes ?",
+ "response": "En droit algérien, le licenciement doit être motivé : l’article 13 de l’Ordonnance n° 66‑03 du 2 juillet 1966 portant Code du travail dispose que « tout licenciement doit être justifié par une cause réelle et sérieuse ». En l’absence de motif, le salarié peut saisir le tribunal du travail dans les 30 jours suivant la notification du licenciement (article 15 du même code). Le juge peut alors annuler le licenciement et ordonner la réintégration du salarié ou, à défaut, condamner l’employeur à verser une indemnité compensatrice équivalente à la rémunération que le salarié aurait perçue pendant la durée du préavis (article 14). Par ailleurs, le salarié bénéficie d’une indemnité de licenciement calculée selon son ancienneté (article 14, alinéa 2). Ces garanties sont donc assurées par les articles 13, 14 et 15 du Code du travail algérien.",
+ "ts": 1795193764.94225
+}

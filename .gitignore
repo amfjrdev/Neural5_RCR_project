@@ -2,9 +2,11 @@
 .env
 config/config.yaml
 
-# Données volumineuses / régénérables
-data/
-!data/.gitkeep
+# Données : on partage la base dérivée (SQLite, articles, index FAISS, cache LLM)
+# mais pas les PDF (21 Mo, re-téléchargeables avec `download`) ni les fichiers lourds régénérables.
+data/raw/
+data/tessdata/
+data/embeddings/
 
 # Python
 # faux JO régénérés par pytest

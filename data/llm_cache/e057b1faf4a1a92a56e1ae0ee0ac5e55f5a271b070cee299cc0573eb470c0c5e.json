@@ -1,0 +1,8 @@
+{
+ "provider": "groq",
+ "model": "openai/gpt-oss-120b",
+ "system": "Tu es un assistant juridique. Réponds à la question sur le droit du travail algérien en 5 phrases au plus, dans la langue de la question. Cite le texte de loi et le numéro d'article exacts sur lesquels tu t'appuies.",
+ "prompt": "Un contrat de travail peut-il être conclu à l'oral ?",
+ "response": "Oui, le contrat de travail peut être conclu à l’oral en Algérie. L’article 12 du Code du travail algérien dispose : « Le contrat de travail peut être conclu verbalement, sauf dispositions contraires prévues par la loi ou par les conventions collectives. » Cependant, pour les emplois soumis à des formalités particulières (ex. : travail des femmes enceintes, travailleurs étrangers, postes de direction), la loi impose une forme écrite (art. 13 et art. 14). En pratique, il est fortement recommandé de formaliser le contrat par écrit afin de pouvoir en justifier les termes en cas de litige. Ainsi, l’oral est légal, mais l’écrit reste la meilleure garantie de sécurité juridique.",
+ "ts": 1795193749.99611
+}

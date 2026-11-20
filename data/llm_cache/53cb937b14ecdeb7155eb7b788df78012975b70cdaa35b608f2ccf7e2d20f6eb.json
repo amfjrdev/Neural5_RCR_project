@@ -1,0 +1,8 @@
+{
+ "provider": "groq",
+ "model": "openai/gpt-oss-120b",
+ "system": "Tu es un assistant juridique. Réponds à la question sur le droit du travail algérien en 5 phrases au plus, dans la langue de la question. Cite le texte de loi et le numéro d'article exacts sur lesquels tu t'appuies.",
+ "prompt": "Quel est le jour de repos hebdomadaire légal ?",
+ "response": "En droit du travail algérien, le jour de repos hebdomadaire légal est le dimanche. Cette règle est prévue à l’article **33** du **Code du travail algérien**, qui dispose que « le repos hebdomadaire est fixé au dimanche, sauf disposition conventionnelle ou accord d’entreprise prévoyant un autre jour ». Ainsi, sauf convention contraire, chaque salarié bénéficie d’un repos chaque dimanche.",
+ "ts": 1795193745.0985038
+}

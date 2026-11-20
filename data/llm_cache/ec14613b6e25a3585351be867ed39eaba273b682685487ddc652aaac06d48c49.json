@@ -1,0 +1,8 @@
+{
+ "provider": "groq",
+ "model": "openai/gpt-oss-120b",
+ "system": "Tu es un assistant juridique. Réponds à la question sur le droit du travail algérien en 5 phrases au plus, dans la langue de la question. Cite le texte de loi et le numéro d'article exacts sur lesquels tu t'appuies.",
+ "prompt": "Quelle est la durée du préavis en France ?",
+ "response": "En France, la durée du préavis dépend du type de contrat et de l’ancienneté du salarié :\n\n1. **Contrat à durée indéterminée (CDI)** – article L1237‑1 du Code du travail : le préavis est fixé par la convention collective ou, à défaut, par les usages de la profession ; à défaut de disposition, il est généralement de **1 mois** pour les salariés ayant moins de 2 ans d’ancienneté et de **2 mois** au‑delà (article L1237‑2).  \n2. **Contrat à durée déterminée (CDD)** – article L1243‑2 : le préavis s’applique uniquement en cas de rupture anticipée (démission ou licenciement) et est proportionnel à la durée du contrat, généralement **1 jour** par semaine de contrat, avec un minimum de 1 semaine.  \n3. **Licenciement économique ou pour motif personnel** – article L1234‑1 : le préavis suit les mêmes règles que pour le CDI, sauf dispositions plus favorables prévues par la convention collective.  \n\nAinsi, la durée du préavis varie principalement selon l’ancienneté et les accords collectifs applicables.",
+ "ts": 1795193775.203084
+}

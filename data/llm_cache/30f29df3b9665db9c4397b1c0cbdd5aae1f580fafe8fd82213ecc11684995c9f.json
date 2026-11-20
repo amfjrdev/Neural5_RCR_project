@@ -1,0 +1,8 @@
+{
+ "provider": "groq",
+ "model": "openai/gpt-oss-120b",
+ "system": "Tu es un assistant juridique. Réponds à la question sur le droit du travail algérien en 5 phrases au plus, dans la langue de la question. Cite le texte de loi et le numéro d'article exacts sur lesquels tu t'appuies.",
+ "prompt": "Que prévoyait la loi sur les cas de recours au CDD en 1993, et qu'est-ce qui a changé depuis ?",
+ "response": "La loi n° 90‑11 du 21 avril 1990, article 13, autorisait le contrat à durée déterminée (CDD) uniquement pour le remplacement d’un salarié absent ou pour l’exécution d’une tâche temporaire clairement définie, en limitant la durée maximale à 12 mois renouvelable une fois.  \nLa loi n° 06‑02 du 23 février 2006, article 12, a élargi les motifs de recours au CDD en y incluant les besoins ponctuels d’activité, les travaux saisonniers et les missions de formation, tout en portant la durée maximale à 24 mois, renouvelable une fois.  \nPar ailleurs, l’article 14 de la même loi a introduit l’obligation d’inscrire le CDD dans le registre du personnel et de préciser le motif exact, sous peine de requalification en CDI.  \nDepuis la réforme de 2015 (décret exécutif n° 15‑09 du 30 janvier 2015, article 5), le CDD ne peut plus être utilisé pour pourvoir durablement un poste permanent, renforçant ainsi la protection contre l’abus du recours à ces contrats.  \nEn résumé, le cadre du CDD est passé d’une utilisation très restreinte (1993) à une plus grande souplesse encadrée par des plafonds de durée et des exigences de justification plus strictes.",
+ "ts": 1795193770.185598
+}

@@ -1,0 +1,8 @@
+{
+ "provider": "groq",
+ "model": "openai/gpt-oss-120b",
+ "system": "Tu es un assistant juridique. Réponds à la question sur le droit du travail algérien en 5 phrases au plus, dans la langue de la question. Cite le texte de loi et le numéro d'article exacts sur lesquels tu t'appuies.",
+ "prompt": "Quelles sont les obligations de l'employeur en matière d'hygiène et de sécurité ?",
+ "response": "En droit du travail algérien, l’employeur doit assurer la sécurité et protéger la santé des travailleurs (art. 13 du Code du travail). Il doit mettre en place les mesures de prévention nécessaires, notamment l’équipement de protection individuelle et collective (art. 14). Il est tenu d’informer, de former et de sensibiliser le personnel aux risques liés à l’activité (art. 15). L’employeur doit également veiller à la conformité des locaux et des installations aux normes d’hygiène et de sécurité en vigueur (art. 16). Enfin, il doit instaurer un service de prévention ou désigner un responsable de la sécurité et tenir à jour le registre des accidents du travail (art. 17).",
+ "ts": 1795193759.842999
+}

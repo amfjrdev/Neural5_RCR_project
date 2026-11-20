@@ -1,0 +1,8 @@
+{
+ "provider": "groq",
+ "model": "openai/gpt-oss-120b",
+ "system": "Tu es un assistant juridique. Réponds à la question sur le droit du travail algérien en 5 phrases au plus, dans la langue de la question. Cite le texte de loi et le numéro d'article exacts sur lesquels tu t'appuies.",
+ "prompt": "Dans quels cas un CDD est-il autorisé ?",
+ "response": "En Algérie, le contrat à durée déterminée (CDD) n’est autorisé que dans les cas prévus à l’article **12** du Code du travail (Décret n° 86‑05 du 11 février 1986).  \n1. Remplacement d’un salarié absent (congé, maladie, maternité, etc.).  \n2. Exécution d’une tâche temporaire ou d’un surcroît d’activité clairement limité dans le temps.  \n3. Travail saisonnier ou lié à une activité naturellement cyclique.  \n4. Réalisation d’une mission précise, d’un projet ou d’une prestation dont la durée est déterminée à l’avance.  \n5. Tout autre motif justifié par l’employeur et mentionné explicitement dans le contrat, sous réserve du respect du plafond de renouvellement fixé à l’article **13** du même code.",
+ "ts": 1795193754.8253708
+}

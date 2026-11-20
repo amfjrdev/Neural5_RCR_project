@@ -1,0 +1,8 @@
+{
+ "provider": "groq",
+ "model": "openai/gpt-oss-120b",
+ "system": "Tu es un assistant juridique. Réponds à la question sur le droit du travail algérien en 5 phrases au plus, dans la langue de la question. Cite le texte de loi et le numéro d'article exacts sur lesquels tu t'appuies.",
+ "prompt": "ما هي المدة القصوى لفترة التجربة؟",
+ "response": "مدة فترة التجربة في القانون الجزائري لا تتجاوز **ثلاثة أشهر** للعمال العاديين، ويمكن تمديدها إلى **ستة أشهر** فقط لل cadres (الإداريين والمهنيين) إذا نصت العقود على ذلك. وهذا ما ينص عليه **المادة 15 من قانون العمل الجزائري** (قانون رقم 90‑11 المتعلق بتنظيم علاقات العمل). وبالتالي، لا يجوز تجاوز هذه الحدود إلا إذا تم الاتفاق صراحةً على تمديدها وفق الشروط المحددة في النص. أي تجاوز للمدة المقررة يعتبر غير قانوني ويستوجب تعديل العقد أو إلغاء الفترة الإضافية.",
+ "ts": 1795193790.152413
+}
