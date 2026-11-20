@@ -4,7 +4,7 @@ pymupdf>=1.24
 pytesseract>=0.3.10
 Pillow>=10.0
 pytest>=8.0
-# Semaines suivantes (recherche) :
-# rank_bm25
-# sentence-transformers
-# faiss-cpu
+# Semaine 2 (recherche)
+rank_bm25>=0.2.2
+sentence-transformers>=3.0
+# faiss-cpu (base vectorielle, à venir)
