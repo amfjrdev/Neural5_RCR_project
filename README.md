@@ -37,7 +37,8 @@ python3 -m venv .venv && source .venv/bin/activate     # macOS : python3 ; Windo
 pip install -e . && pip install -r requirements-lock.txt   # versions exactes de l'équipe
 cp .env.example .env                                   # mettre VOTRE clé Groq (une par personne)
 cp config/config.example.yaml config/config.yaml
-python scripts/search.py "Quel est le jour de repos hebdomadaire ?"   # 1er lancement : télécharge E5 (~470 Mo)
+python scripts/check_setup.py                                          # doit finir par « TOUT EST OK » (télécharge E5, ~470 Mo, au 1er lancement)
+python scripts/search.py "Quel est le jour de repos hebdomadaire ?"
 python scripts/eval_retrieval.py                                       # rejoue la comparaison BM25 / E5
 python scripts/llm_seul.py                                             # rejoue le test LLM depuis le cache (0 appel)
 ```
@@ -52,8 +53,10 @@ pip install -e . ; pip install -r requirements-lock.txt
 copy .env.example .env               # mettre VOTRE clé Groq
 copy config\config.example.yaml config\config.yaml
 $env:PYTHONUTF8 = "1"                # affichage et fichiers en UTF-8 (texte arabe)
-python scripts\search.py "Quel est le jour de repos hebdomadaire ?"
+python scripts\check_setup.py      # doit finir par « TOUT EST OK »
 ```
+Si `pip install -r requirements-lock.txt` échoue sur un paquet, lancer `pip install -r requirements.txt`
+puis `python scripts\check_setup.py` : si tout est OK, l'installation est équivalente.
 Tesseract (seulement pour tout reconstruire) : installeur UB-Mannheim, cocher French et Arabic, ajouter au PATH.
 
 ## Tout reconstruire depuis zéro (~1 h, surtout l'OCR)
