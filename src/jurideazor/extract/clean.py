@@ -12,11 +12,22 @@ _RUNNING_FR = [
     re.compile(r"^\s*N°\s*\d{1,3}\s*$"),                      # « N° 17 » seul
     re.compile(r"^\s*\d{1,4}\s*$"),                           # numéro de page seul
 ]
+# Motifs arabes écrits sur la forme « pliée » (fold_ar) : l'en-tête imprimé porte des
+# voyelles (« الرسميّة ») qui empêchaient la comparaison directe.
 _RUNNING_AR = [
-    re.compile(r"^.*الجريدة\s+الرسمية\s+للجمهورية\s+الجزائرية.*$"),
+    # « الجريدة الرسمية للجمهورية الجزائرية / العدد 17 ». On exige « العدد » : la même
+    # formule sans numéro termine chaque texte (« ينشر ... في الجريدة الرسمية ... ») et
+    # ne doit pas être supprimée.
+    re.compile(r"^.*الجريده\s+(?:\S+\s+)?الرسميه\s+للجمهوريه\s+الجزائريه\s*/?\s*العدد.*$"),
     re.compile(r"^\s*العدد\s*\d{1,3}\s*$"),
     re.compile(r"^\s*\d{1,4}\s*$"),
+    # date d'en-tête : « 7 رجب عام 1446 ه » / « 7 جانفي سنة 2025 م » (jour de semaine facultatif)
+    re.compile(r"^\s*(?:\S+\s+)?(?:\d{1,2}|اول)\s+\S+(?:\s+\S+)?\s+(?:عام|سنه)\s+\d{4}\s*(?:ه|م)\s*$"),
 ]
+# Signes de vocalisation arabes (fatha ... soukoun, alif suscrit)
+_AR_MARK = "[ً-ْٰ]"
+_SPACE_BEFORE_MARK = re.compile(r"[ \t]+(?=" + _AR_MARK + ")")
+_REPEATED_MARK = re.compile("(" + _AR_MARK + r")\1+")
 
 _AR_DIACRITICS = re.compile(r"[ؐ-ًؚ-ٰٟۖ-ۭ]")
 _TATWEEL = "ـ"
@@ -46,12 +57,16 @@ def normalize_unicode(s: str) -> str:
     s = unicodedata.normalize("NFKC", s)
     s = s.replace(" ", " ").replace("’", "'").replace("‘", "'")
     s = s.replace(_TATWEEL, "").translate(_EASTERN_DIGITS)
+    # PDF arabes : la chadda est parfois posée à part (« مؤر ّخ », « إنّّّّ ») ; on la
+    # rattache à sa lettre et on ne garde qu'un signe.
+    s = _REPEATED_MARK.sub(r"\1", _SPACE_BEFORE_MARK.sub("", s))
     return s
 
 
 def remove_running_lines(lines: list[str], lang: str) -> list[str]:
-    pats = _RUNNING_AR if lang == "ar" else _RUNNING_FR
-    return [l for l in lines if not any(p.match(l) for p in pats)]
+    if lang == "ar":
+        return [l for l in lines if not any(p.match(fold_ar(l)) for p in _RUNNING_AR)]
+    return [l for l in lines if not any(p.match(l) for p in _RUNNING_FR)]
 
 
 def dehyphenate(text: str) -> str:

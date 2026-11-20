@@ -1,0 +1,608 @@
+https://www.joradp.dz/FTP/jo-francais/1990/F1990017.pdf
+  autorisé : True | crawl-delay : -
+https://www.upgrowth.dz/data/journal-officiel-archive.csv
+  autorisé : True | crawl-delay : -
+
+===== https://www.joradp.dz/robots.txt =====
+(aucun robots.txt : HTTP 404)
+
+===== https://www.upgrowth.dz/robots.txt =====
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+Disallow: /500
+Disallow: /404
+
+# Block authenticated app pages from crawling.
+# /questions is NOT in this list since 2026-10-06: for everyone except a
+# signed-in member it is the public hub of the Questions tier (the forum of the
+# platform answers only to a session), and /questions/<topic> and /ar/questions
+# are public pages that AI assistants quote. The Googlebot and Bingbot groups
+# below dropped the same line, so the guard in scripts/verify-prerender.mjs
+# (every named group repeats the * rules) stays true.
+Disallow: /home
+Disallow: /dashboard
+Disallow: /messages/
+Disallow: /user
+Disallow: /phases/
+Disallow: /call/
+Disallow: /billing_info
+Disallow: /payment/
+Disallow: /payment_method
+Disallow: /phased_project/
+Disallow: /unphased_project/
+Disallow: /phased_project_call/
+Disallow: /network
+Disallow: /search
+Disallow: /offer/
+Disallow: /contact_me/
+Disallow: /done
+Disallow: /forgot_password
+Disallow: /reset_password
+Disallow: /check_email
+Disallow: /verify_email
+Disallow: /signup/entrepreneur
+Disallow: /signup/consultant_mentor
+Disallow: /startupmap/admin
+Disallow: /badge/
+Disallow: /widget/
+Disallow: /*?search=
+
+# Full text search shards for /journal-officiel. 5,033 machine readable files
+# of official JO text, fetched by the search box only. Never a landing page,
+# never in a sitemap, and a duplicate surface if crawled.
+Disallow: /data/jo-fts/
+
+# BULK MACHINE READABLE CORPORA. These exist so the site's own tools can load
+# them: /ecosystem and /startupmap read entities.json, the nomenclature search
+# reads nae-related.json, the JO hub reads jo-ref-index.json. A person using
+# those pages fetches each file once. Only a harvester wants all of them.
+#
+# THESE THREE RULES ARE DELIBERATELY *NOT* REPEATED IN THE NAMED GROUPS BELOW.
+# That is the exact opposite of the convention documented at the end of this
+# group, and it is intentional, so read this before "fixing" it:
+#
+#   A named group REPLACES this one. By leaving these paths out of the
+#   Googlebot, Bingbot, GPTBot, ClaudeBot, PerplexityBot, OAI-SearchBot and
+#   every other named AI group, those crawlers keep FULL access to the data.
+#   They are the high authority citers we want reading it. Only UNNAMED
+#   crawlers are held out, and an unnamed crawler is what a scraper is.
+#
+# If you add a path here, do NOT copy it into the named groups.
+#
+# The five open CSV datasets are deliberately absent from this list. They are
+# what the site gives away on purpose and they stay crawlable by everyone:
+# cnrc-2026.csv, anae-2026.csv, journal-officiel-archive.csv, wilayas-2026.csv
+# and tarif-douanier-sections-chapitres.csv.
+#
+# NOTE THE LIMIT: robots.txt is advisory. It governs crawlers that choose to
+# obey it. It stops nothing that does not, so it is a signal, not a control.
+# The enforcement lives in nginx.
+Disallow: /data/entities.json
+Disallow: /data/jo-ref-index.json
+Disallow: /data/nae-related.json
+
+# /demo/ IS DELIBERATELY NOT DISALLOWED. DO NOT ADD A RULE FOR IT.
+#
+# /demo/<name>/ holds eight standalone demonstration applications (public/demo/
+# in the repo). Every one of them serves
+#     <meta name="robots" content="noindex, follow">
+# and that tag, not a rule in this file, is what keeps them out of the index.
+#
+# Disallowing them here would BREAK that, not reinforce it. These pages are
+# linked from /realisations, /tech and the service pages in all three language
+# editions. A crawler that is forbidden to fetch a linked URL never reads its
+# noindex, and Google will still list the address it found in those links, with
+# no title and no snippet, and no way to remove it while the block stands. The
+# only mechanism that actually drops a LINKED page from the index is letting the
+# crawler in so it can read the noindex. `follow` is kept on purpose so the
+# links each demo carries back to upgrowth.dz still count.
+#
+# Crawl cost of allowing them: 77 files, about 1.0 MB, against 13 594
+# prerendered pages. Nothing here is a duplicate of a site page.
+#
+# Each demo folder also ships its own robots.txt in the source tree. Those are
+# NOT deployed and would be ignored anyway: only the origin root robots.txt is
+# ever read, so /demo/<name>/robots.txt has no effect at all.
+
+# A NAMED USER AGENT GROUP REPLACES THE WILDCARD GROUP, IT DOES NOT ADD TO IT.
+# These two groups used to be "Allow: /" plus one Disallow, which meant
+# Googlebot and Bingbot ignored every rule in the * group above: /admin,
+# /dashboard, /payment/, /user, /reset_password, /verify_email, all of it was
+# crawlable by the only two crawlers that matter. The * list is therefore
+# repeated verbatim in each named group. robots.txt has no include, so if a
+# path is added above it must be added here too.
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+Disallow: /500
+Disallow: /404
+Disallow: /home
+Disallow: /dashboard
+Disallow: /messages/
+Disallow: /user
+Disallow: /phases/
+Disallow: /call/
+Disallow: /billing_info
+Disallow: /payment/
+Disallow: /payment_method
+Disallow: /phased_project/
+Disallow: /unphased_project/
+Disallow: /phased_project_call/
+Disallow: /network
+Disallow: /search
+Disallow: /offer/
+Disallow: /contact_me/
+Disallow: /done
+Disallow: /forgot_password
+Disallow: /reset_password
+Disallow: /check_email
+Disallow: /verify_email
+Disallow: /signup/entrepreneur
+Disallow: /signup/consultant_mentor
+Disallow: /startupmap/admin
+Disallow: /badge/
+Disallow: /widget/
+Disallow: /*?search=
+Disallow: /data/jo-fts/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+Disallow: /500
+Disallow: /404
+Disallow: /home
+Disallow: /dashboard
+Disallow: /messages/
+Disallow: /user
+Disallow: /phases/
+Disallow: /call/
+Disallow: /billing_info
+Disallow: /payment/
+Disallow: /payment_method
+Disallow: /phased_project/
+Disallow: /unphased_project/
+Disallow: /phased_project_call/
+Disallow: /network
+Disallow: /search
+Disallow: /offer/
+Disallow: /contact_me/
+Disallow: /done
+Disallow: /forgot_password
+Disallow: /reset_password
+Disallow: /check_email
+Disallow: /verify_email
+Disallow: /signup/entrepreneur
+Disallow: /signup/consultant_mentor
+Disallow: /startupmap/admin
+Disallow: /badge/
+Disallow: /widget/
+Disallow: /*?search=
+Disallow: /data/jo-fts/
+
+# Allow AI Bots (We want to be in the knowledge graph + AI citations)
+# AI crawlers keep full access to the content, but a named group replaces the
+# * group, so the private surfaces are repeated in each one: the staff
+# consoles (/admin, /crm) and the client's own dossier page (/suivi-creation/,
+# reached through a personal link). scripts/verify-prerender.mjs fails the
+# build if any named group, present or future, lacks one of them.
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+
+User-agent: CCBot
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+
+User-agent: Applebot
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+
+User-agent: FacebookBot
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+
+User-agent: Bytespider
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+
+# Newer AI search/grounding crawlers (distinct from the training bots above):
+# OpenAI search + user fetches, Anthropic Claude search + user fetches,
+# Perplexity user fetches, Meta AI, DuckDuckGo AI, Mistral user fetches.
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+
+User-agent: Claude-User
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+
+User-agent: meta-externalagent
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+
+User-agent: DuckAssistBot
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+
+User-agent: MistralAI-User
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /crm/
+Disallow: /crm$
+Disallow: /suivi-creation/
+Disallow: /parcours
+Disallow: /ar/parcours
+Disallow: /en/parcours
+Allow: /parcours-connect
+Allow: /ar/parcours-connect
+Disallow: /offre/
+Disallow: /ar/offre/
+Disallow: /en/offre/
+Disallow: /accepter
+Disallow: /ar/accepter
+Disallow: /en/accepter
+Disallow: /connect/paiement/
+
+# AI assistant context file (services, prices, canonical URLs)
+# https://www.upgrowth.dz/llms.txt
+
+# Sitemap
+Sitemap: https://www.upgrowth.dz/sitemap.xml
+# News section (static pages written by the server, outside the app build)
+Sitemap: https://www.upgrowth.dz/sitemap-actualites.xml
+Sitemap: https://www.upgrowth.dz/sitemap-news.xml
+

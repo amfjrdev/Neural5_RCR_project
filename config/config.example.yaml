@@ -26,6 +26,6 @@ filter:
 
 llm:
   # Le modèle est IMPOSÉ par l'enseignant : ne mettez que celui annoncé.
-  provider: "A_CONFIRMER"   # "gemini" ou "groq" selon l'annonce officielle
-  model: "A_CONFIRMER"
+  provider: "groq"            # annoncé par l'enseignant (console.groq.com)
+  model: "openai/gpt-oss-120b"  # modèle commun imposé ; secours sur annonce de l'enseignant uniquement : openai/gpt-oss-20b
   temperature: 0

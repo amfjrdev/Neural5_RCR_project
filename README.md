@@ -26,7 +26,7 @@ pip install -e .            # ou : pip install -r requirements.txt
 #   Windows : installeur UB-Mannheim, cocher French et Arabic, ajouter au PATH
 cp .env.example .env                                  # votre clé personnelle, jamais commitée
 cp config/config.example.yaml config/config.yaml      # email d'équipe + modèle annoncé
-python -m pytest -q                                   # 8 passed
+python -m pytest -q                                   # 13 passed
 ```
 Sans `pip install -e .`, préfixer les commandes par `PYTHONPATH=src`.
 

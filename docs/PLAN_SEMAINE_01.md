@@ -37,7 +37,7 @@ Tout le monde : créer **sa propre clé** API (une par personne, jamais dans Git
 
 ### Jour 1 — Cadrage et socle
 - [ ] **R1** Créer le dépôt Git partagé, y pousser ce squelette, protéger `main` (PR + 1 relecture).
-- [ ] **Tous** `pip install -r requirements.txt` ; installer Tesseract + langues `fra` et `ara` ; `python -m pytest -q` doit afficher **8 passed**.
+- [ ] **Tous** `pip install -r requirements.txt` ; installer Tesseract + langues `fra` et `ara` ; `python -m pytest -q` doit afficher **13 passed**.
 - [ ] **Tous** copier `.env.example` → `.env` et `config/config.example.yaml` → `config/config.yaml` ; mettre l'email d'équipe dans `user_agent`.
 - [ ] **R1** Relire le schéma `src/jurideazor/db.py` en équipe : il fixe dès maintenant les tables des semaines suivantes (`articles`, `article_versions`, `relations`). Le modifier maintenant coûte moins cher que plus tard.
 

@@ -1,0 +1,2 @@
+18 PDF à traiter
+{'ok': 0, 'skipped': 18, 'blocked': 0, 'failed': 0}

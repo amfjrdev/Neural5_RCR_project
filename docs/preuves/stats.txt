@@ -1,0 +1,13 @@
+Numéros : {'ar': 7, 'fr': 11}
+Téléchargés : 18 | échecs : 0
+Pages OCR / total : (138, 180)
+Textes par décision : {'keep': 9, 'reject': 69, 'review': 3}
+Textes gardés par type : {'decret_presidentiel': 1, 'loi': 8}
+  [ar] loi 90-04 (None) قانون رقم 90 - 04 مؤرخ في 10 رجب عام 1410 الموافق 6 نوفمبر سنة. 1990 يتعلق بتسوية النزاعات
+  [ar] loi 90-02 (1990-02-06) قانون رقم 90 - 02 مؤرخ في 10 رجب عام 1410 الموافق 6 فبراير سنة 1990 يتعلق بالوقاية من النز
+  [ar] loi 90-03 (1990-02-06) قانون رقم 90 - 03 مؤرخ في 10 رجب عام 1410 الموافق 6 فبراير سنة 1990 يتعلق بمفتشية العمل
+  [fr] loi 90-02 (1990-02-06) Loi n° 90-02 du 6 février 1990 relative à la prévention et au règlement des confits collec
+  [fr] loi 90-03 (1990-02-06) Loi n° 90-03 du 6 février 1990 relative à l'inspection du travail.
+  [fr] loi 90-04 (1990-02-06) Loi n° 90-04 du 6 février 1990 relative au règlement des conflits individuels de travail.
+  [fr] loi 90-11 (1990-04-21) Loi n° 90-11 du 21 avril 1990 relative aux relations de travail. |
+  [ar] loi 90-11 (1990-04-21) قانون رقم 90 - 11 مؤرخ في 26 رمضان عام 1410 الموافق 21 ابريل سنة 1990 يتعلق بعلاقات العمل

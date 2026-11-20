@@ -23,3 +23,5 @@ targets:
 # ce qui est utile pour mesurer les faux positifs.
 sample_recent:
   - {year: 2025, numbers: [1, 2, 3, 4, 5], editions: [fr]}
+  # Un numéro récent en arabe (PDF natif) : sert à vérifier l'ordre du texte arabe et les chiffres.
+  - {year: 2025, numbers: [1], editions: [ar]}

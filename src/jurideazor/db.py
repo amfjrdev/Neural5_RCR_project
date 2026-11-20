@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS texts (
     seq               INTEGER NOT NULL,         -- ordre dans le numéro
     lang              TEXT    NOT NULL,
     text_type         TEXT,                     -- loi, ordonnance, decret_executif, arrete...
-    text_number       TEXT,                     -- ex. 90-11 (forme canonique AA-N)
+    text_number       TEXT,                     -- ex. 90-11, 90-02 (forme canonique AA-NN)
     sign_date         TEXT,                     -- date de signature (ISO, grégorienne)
     norm_rank         INTEGER,                  -- hiérarchie des normes : 1 = Constitution
     title             TEXT    NOT NULL,

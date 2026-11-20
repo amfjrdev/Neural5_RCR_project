@@ -52,6 +52,10 @@ _TOC_LINE = re.compile(r"(\.\s*){3,}\s*\d{1,4}\s*$|\.{3,}|…{2,}")
 # (on exclut les années grégoriennes/hégiriennes et « article 12 », « n° 3 »...)
 _TOC_PAGE_END = re.compile(r"[a-zéèêàç.](?<!article)(?<!art\.)\s+"
                            r"(?!(?:13|14|19|20)\d\d\b)\d{1,4}\s*$")
+# Mois hégiriens tels qu'écrits au JO (« du 2 / Rajab 1446 ») : seule suite de phrase
+# courante qui commence par une majuscule après un retour à la ligne.
+_HIJRI_MONTH = re.compile(r"(Mou?harram|Safar|Rabi[ea]|D?joumada|Rad?jab|Cha[âa]bane|"
+                          r"Ramadh?an|Chaou[ae]l|Dh?ou)\b", re.I)
 _MONTHS_FR = {"janvier": 1, "fevrier": 2, "mars": 3, "avril": 4, "mai": 5, "juin": 6, "juillet": 7,
               "aout": 8, "septembre": 9, "octobre": 10, "novembre": 11, "decembre": 12}
 _DATE_FR = re.compile(r"(1er|\d{1,2})\s+(janvier|fevrier|mars|avril|mai|juin|juillet|aout|"
@@ -74,7 +78,7 @@ _AR_TYPES = [
     (r"تعليمه", "instruction"),
 ]
 _AR_TYPE_ALT = "|".join(f"(?P<t{i}>{p})" for i, (p, _) in enumerate(_AR_TYPES))
-AR_HEADING = re.compile(rf"^(?:{_AR_TYPE_ALT})(?:\s+رقم\s*(?P<num>\d{{1,4}}\s*[-–]\s*\d{{1,4}}))?\s+م[ؤو]رخ\s+في")
+AR_HEADING = re.compile(rf"^(?:{_AR_TYPE_ALT})(?:\s+رقم\s*(?P<num>\d{{1,4}}\s*[-–]\s*\d{{1,4}}))?\s+م[ؤو]ر\s?خ\s+في")  # « مؤر خ » : chadda perdue par le PDF, il reste une espace
 AR_PREAMBLE = re.compile(r"^(ان\s+رئيس\s+الجمهوريه|ان\s+رئيس\s+الحكومه|ان\s+الوزير|ان\s+وزير|"
                          r"بمقتضي|وبمقتضي|بناء\s+علي|بموجب|المجلس\s+الشعبي|البرلمان|الماده\s+الاولي|"
                          r"يرسم|يقرر|يصدر)")
@@ -130,7 +134,8 @@ def parse_date(title: str, lang: str) -> str | None:
 
 
 def canonical_number(raw: str | None, sign_date: str | None) -> str | None:
-    """Forme AA-N (ex. '90-11'). En arabe l'ordre peut être inversé à l'extraction
+    """Forme AA-NN telle qu'on la cite (ex. '90-11', '90-02', '97-473') : deux chiffres
+    au moins de chaque côté. En arabe l'ordre peut être inversé à l'extraction
     ('11-90') : on remet en tête la partie qui correspond à l'année de signature."""
     if not raw:
         return None
@@ -139,15 +144,28 @@ def canonical_number(raw: str | None, sign_date: str | None) -> str | None:
         yy = sign_date[2:4]
         if b.zfill(2) == yy and a.zfill(2) != yy:
             a, b = b, a
-    return f"{a.zfill(2)}-{int(b)}"
+    return f"{a.zfill(2)}-{str(int(b)).zfill(2)}"
 
 
-def _looks_toc(line: str) -> bool:
-    return bool(_TOC_LINE.search(line) or _TOC_PAGE_END.search(line))
+def _continues_sentence(nxt: str | None) -> bool:
+    """La ligne suivante prolonge-t-elle la phrase (retour à la ligne dans la colonne) ?
+    Oui si elle commence par une minuscule ou par un mois hégirien ; une nouvelle entrée
+    de sommaire, un intitulé ou une rubrique commencent par une majuscule."""
+    s = (nxt or "").lstrip()
+    return bool(s) and (s[0].islower() or bool(_HIJRI_MONTH.match(s)))
 
 
-def _is_heading(line: str, lang: str):
-    if _looks_toc(line):
+def _looks_toc(line: str, nxt: str | None = None) -> bool:
+    """Ligne de sommaire ? Points de conduite, ou numéro de page en fin de ligne (OCR).
+    Un nombre en fin de ligne n'est un numéro de page que si la phrase s'arrête là :
+    « ... correspondant au 2 » suivi de « janvier 2025 ... » est un intitulé coupé."""
+    if _TOC_LINE.search(line):
+        return True
+    return bool(_TOC_PAGE_END.search(line)) and not _continues_sentence(nxt)
+
+
+def _is_heading(line: str, lang: str, nxt: str | None = None):
+    if _looks_toc(line, nxt):
         return None
     if lang == "fr":
         return FR_HEADING.match(line)
@@ -170,15 +188,19 @@ def segment_issue(pages: list[tuple[int, str]], lang: str) -> list[Segment]:
     segments: list[Segment] = []
     section: str | None = None
     i, cur = 0, None
+
+    def after(k: int) -> str | None:  # ligne qui suit la ligne k (None en fin de numéro)
+        return flat[k + 1][1] if k + 1 < len(flat) else None
+
     while i < len(flat):
         page, line = flat[i]
-        m = _is_heading(line, lang)
+        m = _is_heading(line, lang, after(i))
         if m:
             # titre = intitulé + lignes suivantes jusqu'au préambule
             j, title_lines, ok = i + 1, [line], False
             while j < len(flat) and j - i <= LOOKAHEAD:
                 nxt = flat[j][1]
-                if _is_heading(nxt, lang) or _looks_toc(nxt):
+                if _is_heading(nxt, lang, after(j)) or _looks_toc(nxt, after(j)):
                     break
                 if _is_preamble(nxt, lang):
                     ok = True

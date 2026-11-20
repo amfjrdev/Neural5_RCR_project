@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 
 from jurideazor.extract.clean import clean_page, fix_mojibake, fold_ar
-from jurideazor.extract.pdf_text import extract_pages
+from jurideazor.extract.pdf_text import extract_pages, join_rtl_fragments
 from jurideazor.extract.segment import canonical_number, parse_date, segment_issue
 from jurideazor.filter.labor import classify
 
@@ -104,6 +104,137 @@ def test_numero_et_date():
     assert parse_date("Décret exécutif n° 97-59 du Aouel Dhou El Kaada 1417 correspondant au 9 mars 1997", "fr") == "1997-03-09"
     assert parse_date("Ordonnance n° 96-21 du 1er juillet 1996", "fr") == "1996-07-01"
     assert fold_ar("المادّة الأولى") == "الماده الاولي"
+
+
+def test_numero_garde_le_zero():
+    # « loi n° 90-02 » doit rester « 90-02 » (et non « 90-2 ») pour être retrouvée par son numéro
+    assert canonical_number("90-02", "1990-02-06") == "90-02"
+    assert canonical_number("02-90", "1990-02-06") == "90-02"   # ordre inversé (arabe)
+    assert canonical_number("97-3", "1997-01-11") == "97-03"    # zéro perdu à l'OCR
+    assert canonical_number("97-473", "1997-12-08") == "97-473"
+    assert canonical_number("06-03", None) == "06-03"
+
+
+# Intitulés coupés par la colonne juste après un nombre : la 1re ligne ressemble à une
+# ligne de sommaire (« ... au 2 ») alors que la phrase continue à la ligne suivante.
+PAGE_INTITULES_COUPES = """DECRETS
+Décret exécutif n° 25-01 du 2 Rajab 1446 correspondant au 2
+janvier 2025 fixant les modalités d'application des dispositions
+relatives au contrat de travail.
+Le Premier ministre,
+Vu la Constitution ;
+Décrète :
+Article 1er. - Le présent décret fixe les modalités relatives au contrat de travail (texte de test).
+Décret exécutif n° 25-02 du 2
+Rajab 1446 correspondant au 2 janvier 2025 relatif à la pêche.
+Le Premier ministre,
+Décrète :
+Article 1er. - Pêche (texte de test).
+LOIS
+Loi n° 91-29 du 21 décembre 1991 modifiant et complétant la loi n° 90-11 du 21
+avril 1990 relative aux relations de travail.
+Le Président de la République,
+Promulgue la loi dont la teneur suit :
+Article 1er. - Texte de test.
+"""
+
+
+def test_intitule_coupe_apres_un_nombre():
+    segs = segment_issue([(1, clean_page(PAGE_INTITULES_COUPES, "fr"))], "fr")
+    assert [(s.text_type, s.text_number, s.sign_date) for s in segs] == [
+        ("decret_executif", "25-01", "2025-01-02"),
+        ("decret_executif", "25-02", "2025-01-02"),
+        ("loi", "91-29", "1991-12-21"),
+    ]
+    assert "contrat de travail" in segs[0].title
+    assert "Pêche" in segs[1].body and "contrat de travail" not in segs[1].body
+
+
+# Sommaire passé par l'OCR : les points de conduite ont disparu, il ne reste que le numéro
+# de page en fin d'entrée. Aucune entrée du sommaire ne doit devenir un texte.
+PAGE_SOMMAIRE_OCR = """SOMMAIRE
+DECRETS
+Décret exécutif n° 25-01 du 2 Rajab 1446 correspondant au 2
+janvier 2025 fixant les modalités d'application des dispositions
+relatives au contrat de travail 4
+Décret exécutif n° 25-02 du 2 Rajab 1446 correspondant au 2 janvier 2025 relatif à la pêche 5
+Situation mensuelle au 31 janvier 2025 9
+DECRETS
+Décret exécutif n° 25-01 du 2 Rajab 1446 correspondant au 2
+janvier 2025 fixant les modalités d'application des dispositions
+relatives au contrat de travail.
+Le Premier ministre,
+Décrète :
+Article 1er. - Texte de test.
+"""
+
+
+def test_sommaire_ocr_ne_cree_pas_de_texte():
+    segs = segment_issue([(1, clean_page(PAGE_SOMMAIRE_OCR, "fr"))], "fr")
+    assert [(s.text_number, s.sign_date) for s in segs] == [("25-01", "2025-01-02")]
+    assert segs[0].title.endswith("contrat de travail.")
+
+
+# ------------------------------------------------ PDF arabes natifs (>= 2002) ---
+# Morceaux réels du JO n° 1 de 2025, édition arabe, page 4 : (x0, y0, x1, y1, texte).
+# Le PDF coupe la ligne à chaque nombre ; donnés ici dans le désordre.
+FRAGMENTS_AR = [
+    (404.7, 147.7, 419.7, 157.7, "432"),
+    (309.7, 184.9, 500.3, 194.9, "، يتضمن تحويل اعتماد بعنوان ميزانية "),
+    (423.0, 147.7, 543.0, 157.7, "مرسوم رئاسي رقم 24"),
+    (382.4, 166.3, 438.1, 176.3, " الموافق 31"),
+    (347.9, 147.7, 405.2, 157.7, " مؤرّخ في 29"),
+    (419.7, 147.7, 423.0, 157.7, "-"),
+    (437.6, 166.3, 520.3, 176.3, "الثانية عام 1446"),
+    (309.7, 147.7, 348.4, 157.7, " جمادى "),
+    (500.3, 184.9, 520.4, 194.9, "2024"),
+    (309.8, 166.3, 382.9, 176.3, " ديسمبر سنة "),
+]
+
+
+def test_ligne_arabe_recollee():
+    lignes = [l.strip() for l in join_rtl_fragments(FRAGMENTS_AR).splitlines()]
+    assert lignes == [
+        "مرسوم رئاسي رقم 24-432 مؤرّخ في 29 جمادى",      # le numéro du texte est entier
+        "الثانية عام 1446 الموافق 31 ديسمبر سنة",
+        "2024، يتضمن تحويل اعتماد بعنوان ميزانية",
+    ]
+    # parenthèses : le PDF donne le glyphe affiché, inversé en écriture de droite à gauche
+    assert join_rtl_fragments([(300.0, 10.0, 500.0, 20.0, ")الفقرة الأولى( منه،")]) == "(الفقرة الأولى) منه،"
+    # deux morceaux séparés par un blanc visible sur la page : on remet une espace
+    assert join_rtl_fragments([(400.0, 10.0, 500.0, 20.0, "سنة"), (370.0, 10.0, 395.0, 20.0, "2024")]) == "سنة 2024"
+
+
+PAGE_AR_NATIVE = "\n".join([
+    "7 رجب عام 1446 ه",
+    "الجريدة الرسميّة للجمهوريّة الجزائريّة / العدد الأوّل",
+    "7 جانفي سنة 2025 م",
+    "مراسيم تنظيمية",
+    *[l.strip() for l in join_rtl_fragments(FRAGMENTS_AR).splitlines()],
+    "الدولة.",
+    "إنّّّّ رئيس الجمهوريّّة،",
+    "- وبمقتضى القانون رقم 90-11 المتعلّق بعلاقات العمل،",
+    "المادّة 2 : ينشر هذا المرسوم في الجريدة الرسميّة للجمهوريّة الجزائريّة الدّيمقراطيّة الشّعبيّة.",
+    "مرسوم رئاسي مؤر خ في 7 رجب عام 1446 الموافق 7 جانفي سنة 2025، يتضمن تعيين مدير.",
+    "بموجب مرسوم رئاسي مؤر خ في 7 رجب عام 1446 يعيّن السيد كريم مثال مديرا (نص تجريبي).",
+    "قرار وزاري مشترك مؤر ّخ في 23 جمادى الثانية عام 1446 الموافق 25 ديسمبر سنة 2024، يتضمن وضع بعض الأسلاك.",
+    "إنّ الوزير الأول،",
+    "المادّة الأولى : نص تجريبي.",
+])
+
+
+def test_pdf_arabe_natif_entetes_et_intitules():
+    propre = clean_page(PAGE_AR_NATIVE, "ar")
+    # en-têtes de page supprimés malgré les voyelles ; la formule finale du texte est gardée
+    assert propre.splitlines()[0] == "مراسيم تنظيمية"
+    assert "ينشر هذا المرسوم في الجريدة" in propre
+    assert "مؤرّخ في 23" in propre and "إنّ رئيس" in propre       # chadda rattachée, non répétée
+    segs = segment_issue([(4, propre)], "ar")
+    assert [(s.text_type, s.text_number, s.sign_date) for s in segs] == [
+        ("decret_presidentiel", "24-432", "2024-12-31"),
+        ("decret_presidentiel", None, "2025-01-07"),             # « مؤر خ » : chadda perdue par le PDF
+        ("arrete_interministeriel", None, "2024-12-25"),
+    ]
 
 
 # -------------------------------------------------- chaîne complète + rejeu ---
