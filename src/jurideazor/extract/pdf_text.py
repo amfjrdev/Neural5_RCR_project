@@ -115,12 +115,31 @@ def _ordered_blocks(page, rtl: bool) -> str:
 
 def _ocr_page(page, lang: str, dpi: int) -> str:
     import pytesseract
-    from PIL import Image
+    from PIL import Image, ImageEnhance
 
-    pix = page.get_pixmap(dpi=dpi)
+    use_dpi = max(dpi, 300) if lang == "ar" else dpi
+    pix = page.get_pixmap(dpi=use_dpi)
     img = Image.open(io.BytesIO(pix.tobytes("png")))
-    # psm 3 : segmentation automatique, gère les deux colonnes
-    return pytesseract.image_to_string(img, lang="ara" if lang == "ar" else "fra", config="--psm 3")
+    if lang != "ar":
+        return pytesseract.image_to_string(img, lang="fra", config="--psm 3")
+
+    w, h = img.size
+    header_h = int(h * 0.10)
+    mid = w // 2
+    margin = int(w * 0.03)
+
+    # Pass 1 : الإعداد الأصلي المستقر (142/158)
+    img1 = ImageEnhance.Contrast(img.convert("L")).enhance(1.6)
+    top1 = pytesseract.image_to_string(img1.crop((0, 0, w, header_h)), lang="ara", config="--psm 3")
+    right1 = pytesseract.image_to_string(img1.crop((mid - margin, header_h, w, h)), lang="ara", config="--psm 3")
+    left1 = pytesseract.image_to_string(img1.crop((0, header_h, mid + margin, h)), lang="ara", config="--psm 3")
+
+    # Pass 2 : تمريرة مكملة بالـ --psm 6 لالتقاط رؤوس المواد الباهتة
+    img2 = ImageEnhance.Contrast(img.convert("L")).enhance(2.0)
+    right2 = pytesseract.image_to_string(img2.crop((mid - margin, header_h, w, h)), lang="ara", config="--psm 6")
+    left2 = pytesseract.image_to_string(img2.crop((0, header_h, mid + margin, h)), lang="ara", config="--psm 6")
+
+    return f"{top1}\n{right1}\n{left1}\n{right2}\n{left2}"
 
 
 def extract_pages(pdf_path, lang: str, ocr_min_chars: int = 80, dpi: int = 300,

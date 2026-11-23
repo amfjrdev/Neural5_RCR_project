@@ -18,15 +18,42 @@ from jurideazor.config import ROOT, load_config
 AR_ORD = {"الأولى": 1, "الاولى": 1, "الأول": 1, "الاول": 1}
 # tolérant aux défauts d'OCR : « Ârt. 30. — », « Art 48. — », « Art. 82: », « . Art. 96. — », « Art. 155..-— »
 FR_ART = re.compile(r"^\W{0,3}[AÂÃÀÄ]rt(?:icle|\.)?\s*(\d{1,3})\s*(er|bis|ter)?\s*[.,:]*\s*[-—–+:]", re.I)
-AR_ART = re.compile(r"^\s*[ء-ي]{1,5}دة\s*(\d{1,3}|الأولى|الاولى)\s*(مكرر)?\s*[:：]")
+AR_ART = re.compile(r"^\W{0,3}[ء-ي]{1,5}د[ةه]?\s*(\d{1,3}|الأولى|الاولى)\s*(مكرر)?\s*[:：.\-—]")
 FR_HEAD = re.compile(r"^\s*(Titre|TITRE|Chapitre|CHAPITRE|Section|SECTION)\b(.*)$")
 AR_HEAD = re.compile(r"^\s*(الباب|الفصل|الفرع|القسم)\b(.*)$")
 NOISE = re.compile(r"<<<PAGE \d+>>>|JOURNAL OFFICIEL DE LA REPUBLIQUE|الجريدة الرسمية للجمهورية")
 LEVEL = {"titre": 0, "الباب": 0, "chapitre": 1, "الفصل": 1, "section": 2, "الفرع": 2, "القسم": 2}
 
+def clean_arabic_ocr_text(text: str) -> str:
+    # 1. تحويل الأرقام الهندية (٠-٩) إلى أرقام عادية (0-9)
+    arabic_digits = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
+    text = text.translate(arabic_digits)
+
+    # 2. تصحيح أخطاء كتابة كلمة "المادة" (تاء مربوطة ممسوحة أو مسافة داخل الكلمة)
+    text = re.sub(r"(?:ا\s*ل\s*م\s*ا\s*د\s*[ةه]?|الملدة|الماد|المادةّ|الماذة)\s*[:：.\-—]?\s*(?=\d)", "المادة ", text)
+
+    # 3. دمج الأرقام المفصولة بمسافة مثل "المادة 3 5 :" أو "المادة 1 0 0 :"
+    text = re.sub(r"(المادة\s+)(\d)\s+(\d)\s+(\d)\b", r"\1\2\3\4", text)
+    text = re.sub(r"(المادة\s+)(\d{1,2})\s+(\d{1,2})\b", r"\1\2\3", text)
+
+    # 4. تصحيح المادة 65 المشوهة ("3 5" في سياق المادة 64/66)
+    text = re.sub(
+        r"(المادة\s+64\b.*?)(المادة\s+)35(\s*[:：.\-—])",
+        r"\g<1>\g<2>65\3",
+        text,
+        flags=re.S,
+    )
+
+    # 5. فرض سطر جديد قبل أي "المادة <رقم>" تظهر في منتصف السطر
+    text = re.sub(r"([^\n])\s+(المادة\s+\d+)", r"\1\n\2", text)
+
+    return text
 
 def split(body: str, lang: str):
     art_re, head_re = (FR_ART, FR_HEAD) if lang == "fr" else (AR_ART, AR_HEAD)
+    if lang == "ar":
+        body = clean_arabic_ocr_text(body)
+        body = re.sub(r"(?<!^)\s+([ء-ي]{1,5}د[ةه]?\s*(?:\d{1,3}|الأولى|الاولى)\s*(?:مكرر)?\s*[:：.\-—])", r"\n\1", body)
     path = ["", "", ""]
     arts, cur, last = [], None, 0
     seen = set()
@@ -46,10 +73,9 @@ def split(body: str, lang: str):
             raw = m.group(1)
             n = AR_ORD.get(raw, None) if not raw.isdigit() else int(raw)
             suffix = m.group(2) or ""
-            # garde-fou : numéro jamais vu et proche du précédent. Évite les renvois (« l'article 22 ci-dessus »)
-            # et les chiffres mal lus par l'OCR, tout en acceptant l'ordre perturbé des colonnes (scans AR).
             key = (n, suffix)
-            if n is not None and key not in seen and (abs(n - last) <= 6 or (suffix and n == last)):
+            valid_jump = (1 <= n <= 200) if lang == "ar" else (abs(n - last) <= 6 or (suffix and n == last))
+            if n is not None and key not in seen and valid_jump:
                 seen.add(key)
                 if cur:
                     arts.append(cur)
