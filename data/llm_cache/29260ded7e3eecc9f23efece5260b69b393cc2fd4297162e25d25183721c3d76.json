@@ -1,0 +1,8 @@
+{
+ "provider": "groq",
+ "model": "openai/gpt-oss-120b",
+ "system": "",
+ "prompt": "Réponds en une phrase : quel est l'objet de la loi algérienne n° 90-11 ? Si tu n'es pas sûr, dis-le.",
+ "response": "L’objet de la loi algérienne n° 90‑11 est de régir le régime juridique de la protection, de la conservation et de la mise en valeur du patrimoine culturel et naturel du pays.",
+ "ts": 1795718599.124222
+}
