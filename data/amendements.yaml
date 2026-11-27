@@ -1,0 +1,77 @@
+# Semaine 3 — Textes qui modifient la loi 90-11 et corrections manuelles.
+# Utilisé par scripts/build_versions.py (rejouable : il efface puis recrée ce qu'il a produit).
+#
+# entree_en_vigueur : date à partir de laquelle la nouvelle version s'applique.
+#   Règle retenue : date de publication au Journal officiel, sauf disposition contraire du texte
+#   (ex. ordonnance 97-03, art. 9 : « prend effet deux (2) mois à compter de la date de sa publication »).
+#   Les dates de publication viennent de l'en-tête de chaque numéro (data/text/fr/AAAA/*.txt).
+
+loi_cible: "90-11"
+loi_ref: "loi:90-11"
+
+textes:
+  - ref: "loi:91-29"
+    localiser: {year: 1991, number: 68, edition: fr, text_number: "91-29"}
+    date_signature: "1991-12-21"
+    entree_en_vigueur: "1991-12-25"     # JO n° 68 du 25 décembre 1991
+
+  - ref: "decret_legislatif:94-03"
+    # Bug de segmentation : le corps du 94-03 est enregistré sous le titre d'un arrêté (voir README, bugs connus).
+    localiser: {year: 1994, number: 20, edition: fr, contient: ["ainsi con", "salaire national minimum", "Chaoual 1414"]}
+    corriger:
+      text_type: "decret_legislatif"
+      text_number: "94-03"
+      sign_date: "1994-04-11"
+      norm_rank: 2
+      title: "Décret législatif n° 94-03 du 30 Chaoual 1414 correspondant au 11 avril 1994 complétant la loi n° 90-11 du 21 avril 1990 relative aux relations de travail."
+    date_signature: "1994-04-11"
+    entree_en_vigueur: "1994-04-13"     # JO n° 20 du mercredi 2 Dhou El Kaada 1414 (13 avril 1994)
+
+  - ref: "ordonnance:96-21"
+    localiser: {year: 1996, number: 43, edition: fr, text_number: "96-21"}
+    date_signature: "1996-07-09"
+    entree_en_vigueur: "1996-07-10"     # JO n° 43 du 10 juillet 1996
+
+  - ref: "ordonnance:97-02"
+    # Texte absent de la table texts (raté par la segmentation) : ajouté depuis le texte extrait du numéro.
+    localiser: {year: 1997, number: 3, edition: fr, text_number: "97-02"}
+    ajouter_depuis_texte:
+      fichier: "data/text/fr/1997/F1997003.txt"
+      debut: "Ordonnance :n° 97-02 du 2 Ramadhan"
+      fin: "Fait à Alger"
+      text_type: "ordonnance"
+      sign_date: "1997-01-11"
+      norm_rank: 2
+      title: "Ordonnance n° 97-02 du 2 Ramadhan 1417 correspondant au 11 janvier 1997 complétant la loi n° 90-11 du 21 avril 1990 relative aux relations de travail."
+    date_signature: "1997-01-11"
+    entree_en_vigueur: "1997-01-12"     # JO n° 3 du 12 janvier 1997
+
+  - ref: "ordonnance:97-03"
+    localiser: {year: 1997, number: 3, edition: fr, text_number: "97-03"}
+    date_signature: "1997-01-11"
+    entree_en_vigueur: "1997-03-12"     # art. 9 : effet 2 mois après la publication (JO n° 3 du 12/01/1997)
+    # Les articles 22 à 26 de la loi 90-11 sont abrogés (art. 8) ; la règle se trouve désormais ici :
+    renvois:
+      "22": "art. 2"    # durée légale : 44 h -> 40 h
+      "23": "art. 4"    # dérogations (réduction / augmentation)
+      "24": "art. 5"    # agriculture : 2000 h -> 1800 h par an
+      "25": "art. 6"    # séance continue : pause
+      "26": "art. 7"    # amplitude journalière : 12 h
+
+# Opérations que l'OCR a abîmées (en-tête d'article perdu). Ajoutées à la main après lecture du texte.
+# verifie: false  => à contrôler sur l'image du PDF puis passer à true.
+operations_manuelles:
+  - texte: "ordonnance:96-21"
+    article_source: "4"
+    action: "complete"
+    cible: "13"
+    texte_introduit: "Art. 13. — (alinéa 2 ajouté) Les modalités d'application du présent article sont fixées par voie réglementaire."
+    verifie: false
+    note: "En-tête « Art. 4. — L'article 13 … » perdu par l'OCR ; texte cité visible dans l'extraction."
+
+# Articles de 96-21 dont la cible n'a pas pu être lue (à lire sur le PDF F1996043.pdf, puis à ajouter ci-dessus) :
+a_verifier:
+  - "ordonnance:96-21 art. 13 : « … est complété et rédigé comme suit : … La condition d'ancienneté prévue à l'alinéa 3 n'est pas requise … » (cible probable : art. 97)"
+  - "ordonnance:96-21 art. 16 : article absent de l'extraction"
+  - "ordonnance:96-21 art. 10 : cible 91 (l'OCR lit « Art. 9]. »)"
+  - "ordonnance:96-21 art. 15 : cible 100 (l'en-tête cité est mal lu)"
